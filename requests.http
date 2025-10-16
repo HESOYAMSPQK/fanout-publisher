@@ -1,0 +1,77 @@
+### Fanout Publisher API - HTTP Requests
+### Используется с REST Client extension в VS Code
+
+### Переменные
+@baseUrl = http://localhost:8000
+@serviceToken = your_service_token_here
+
+### Health Check
+GET {{baseUrl}}/health
+Content-Type: application/json
+
+###
+
+### POST /ingest - Отправка видео на публикацию
+POST {{baseUrl}}/ingest
+Content-Type: application/json
+X-Service-Token: {{serviceToken}}
+
+{
+  "video_hash": "abc123def456",
+  "s3_key": "videos/123456789/20251015_120000_abc123.mp4",
+  "file_size": 5242880,
+  "duration": 30,
+  "platform": "youtube",
+  "title": "Тестовое видео для YouTube Shorts",
+  "description": "Это описание тестового видео #shorts #test",
+  "tags": ["shorts", "test", "demo"],
+  "telegram_user_id": "123456789",
+  "telegram_message_id": "999"
+}
+
+###
+
+### GET /status - Проверка статуса публикации
+@submissionId = your_submission_id_here
+
+GET {{baseUrl}}/status/{{submissionId}}
+X-Service-Token: {{serviceToken}}
+
+###
+
+### POST /retry_failed - Повтор неудавшейся публикации
+POST {{baseUrl}}/retry_failed/{{submissionId}}
+X-Service-Token: {{serviceToken}}
+
+###
+
+### Тест без токена (должен вернуть 401)
+POST {{baseUrl}}/ingest
+Content-Type: application/json
+
+{
+  "video_hash": "test",
+  "s3_key": "test.mp4",
+  "file_size": 1000,
+  "platform": "youtube",
+  "title": "Test"
+}
+
+###
+
+### Тест с неверным токеном (должен вернуть 403)
+POST {{baseUrl}}/ingest
+Content-Type: application/json
+X-Service-Token: wrong_token
+
+{
+  "video_hash": "test",
+  "s3_key": "test.mp4",
+  "file_size": 1000,
+  "platform": "youtube",
+  "title": "Test"
+}
+
+###
+
+
