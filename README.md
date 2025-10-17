@@ -169,7 +169,13 @@ docker-compose ps
 
 ### 🔧 Настройка платформ
 - **[GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md)** — 🚀 Настройка GitHub Pages (Terms & Privacy)
-- **[TIKTOK_SETUP_GUIDE.md](TIKTOK_SETUP_GUIDE.md)** — 📘 Настройка TikTok Content Posting API
+- **[TIKTOK_АВТООБНОВЛЕНИЕ_ТОКЕНОВ.md](TIKTOK_АВТООБНОВЛЕНИЕ_ТОКЕНОВ.md)** — 🔄 **Автообновление TikTok токенов (ВАЖНО!)**
+- **[TIKTOK_QUICK_START.md](TIKTOK_QUICK_START.md)** — ⚡ TikTok Quick Start (старт за 5 шагов)
+- **[TIKTOK_TOKEN_JUSTINSTOLPE.md](TIKTOK_TOKEN_JUSTINSTOLPE.md)** — 🎯 **Получение токена через justinstolpe.com (ПРОЩЕ ВСЕГО!)**
+- **[TIKTOK_SETUP_GUIDE.md](TIKTOK_SETUP_GUIDE.md)** — 📘 Полное руководство по TikTok API
+- **[TIKTOK_MANUAL_TOKEN.md](TIKTOK_MANUAL_TOKEN.md)** — 🔐 Получение токена вручную
+- **[TIKTOK_APP_FORM_TEMPLATE.md](TIKTOK_APP_FORM_TEMPLATE.md)** — 📋 Шаблон для заполнения формы TikTok
+- **[TIKTOK_ENV_SETUP.md](TIKTOK_ENV_SETUP.md)** — 🔧 Настройка .env для TikTok
 - **[VK_SETUP_GUIDE.md](VK_SETUP_GUIDE.md)** — 📘 Настройка VK (ВКонтакте) API
 
 ### 📖 Дополнительно

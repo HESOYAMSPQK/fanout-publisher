@@ -56,10 +56,6 @@ class PublishJob(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     published_at = Column(DateTime, nullable=True)
     
-    # Telegram metadata
-    telegram_user_id = Column(String, nullable=True)
-    telegram_message_id = Column(String, nullable=True)
-    
     def __repr__(self):
         return f"<PublishJob(id={self.id}, platform={self.platform}, status={self.status})>"
 

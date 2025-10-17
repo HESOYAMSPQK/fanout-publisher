@@ -14,9 +14,6 @@ class IngestRequest(BaseModel):
     title: str = Field(..., description="Заголовок видео")
     description: Optional[str] = Field(None, description="Описание видео")
     tags: Optional[List[str]] = Field(None, description="Теги видео")
-    
-    telegram_user_id: Optional[str] = Field(None, description="Telegram User ID")
-    telegram_message_id: Optional[str] = Field(None, description="Telegram Message ID")
 
 
 class IngestResponse(BaseModel):

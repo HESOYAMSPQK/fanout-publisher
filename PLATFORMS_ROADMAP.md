@@ -180,21 +180,21 @@ class TikTokPublisher:
 
 ### 🔵 ВКонтакте (VK)
 
-**Приоритет:** Средний  
-**Статус:** 🔄 В планах  
-**API:** VK API
+**Приоритет:** Высокий  
+**Статус:** ✅ Реализовано (добавлено 2025-10-16)  
+**API:** VK API v5.131
 
 #### Официальный способ:
 
 **Требования:**
-- VK приложение: https://vk.com/apps?act=manage
-- Access Token с scope `video`
-- Можно использовать Standalone приложение или Community токен
+- VK приложение через VK ID: https://id.vk.com/
+- Access Token с scope `video,offline`
+- Standalone приложение (создается через VK ID с 2024 года)
 
 **Шаги интеграции:**
-1. Создать приложение на https://vk.com/apps?act=manage
-2. Получить Client ID и Secure Key
-3. Реализовать OAuth или получить Service Token
+1. Создать Standalone-приложение на https://id.vk.com/
+2. Получить ID приложения
+3. Реализовать OAuth для получения Access Token
 4. Использовать Video API
 
 **Endpoints:**
@@ -224,34 +224,45 @@ POST {upload_url}
 - Можно публиковать на стену сообщества
 - Можно добавлять в альбомы
 
-**План реализации:**
+**Реализация:**
 ```python
-# platforms/vkontakte.py
+# platforms/vk.py - ✅ РЕАЛИЗОВАНО
 
 class VKPublisher:
     def __init__(self, access_token, group_id=None):
         self.access_token = access_token
         self.group_id = group_id
+    
+    def publish_video(self, video_path, title, description, 
+                     is_private=True, is_clip=False, wallpost=False):
+        # 1. Получить upload URL через video.save
+        upload_data = self._api_request('video.save', {
+            'name': title,
+            'description': description,
+            'is_private': 1 if is_private else 0,
+            'wallpost': 1 if wallpost else 0,
+            'group_id': self.group_id if self.group_id else None
+        })
         
-    def publish_video(self, video_path, title, description, is_story=False):
-        if is_story:
-            return self._publish_story(video_path)
+        # 2. Загрузить видео на upload_url
+        with open(video_path, 'rb') as f:
+            upload_response = requests.post(upload_data['upload_url'], 
+                                           files={'video_file': f})
         
-        # 1. Получить upload URL
-        upload_url = self._get_upload_url(title, description)
-        
-        # 2. Загрузить видео
-        video_data = self._upload_video(upload_url, video_path)
-        
-        # 3. Опубликовать на стене (опционально)
-        if self.group_id:
-            self._post_to_wall(video_data['owner_id'], video_data['video_id'])
+        # 3. Опционально конвертировать в клип
+        if is_clip:
+            self._api_request('clips.add', {
+                'video_id': upload_data['video_id'],
+                'owner_id': upload_data['owner_id']
+            })
         
         return {
-            'platform_job_id': f"{video_data['owner_id']}_{video_data['video_id']}",
-            'public_url': f"https://vk.com/video{video_data['owner_id']}_{video_data['video_id']}"
+            'platform_job_id': f"{upload_data['owner_id']}_{upload_data['video_id']}",
+            'public_url': f"https://vk.com/video{upload_data['owner_id']}_{upload_data['video_id']}"
         }
 ```
+
+**Документация:** См. `VK_SETUP_GUIDE.md` для детальной настройки.
 
 ---
 
@@ -569,9 +580,9 @@ def publish_submission(self, submission_id: str):
 | Платформа | Приоритет | Сложность | API Качество | Лимиты | OAuth | Примечания |
 |-----------|-----------|-----------|--------------|--------|-------|------------|
 | YouTube | ✅ Готово | Средняя | Отличное | 10k units/day | Да | Стабильный, документирован |
+| VK | ✅ Готово | Средняя | Хорошее | До 5 ГБ/видео | Да | Создание через VK ID с 2024 |
 | Instagram | Высокий | Высокая | Хорошее | 25 постов/день | Да | Требует Business аккаунт |
 | TikTok | Высокий | Высокая | Хорошее | ~5-10/день | Да | Требует ревью приложения |
-| VK | Средний | Средняя | Хорошее | 1500 req/day | Да | Стабильный, русский |
 | OK | Низкий | Средняя | Среднее | Зависит | Да | Требует подписи запросов |
 | Дзен | Средний | Средняя | Среднее | Зависит | Да | Требует заявку на API |
 | Twitter/X | Средний | Высокая | Хорошее | 50 твитов/день | Да | Chunked upload |
@@ -588,9 +599,10 @@ def publish_submission(self, submission_id: str):
    - [ ] Тесты для новых адаптеров
 
 2. **Milestone 3:**
-   - [ ] VK адаптер
+   - [x] VK адаптер ✅ **ГОТОВО**
    - [ ] OK адаптер
-   - [ ] Stories для Instagram/VK
+   - [ ] Stories для VK
+   - [ ] VK клипы (вертикальные видео)
 
 3. **Milestone 4:**
    - [ ] Дзен адаптер
@@ -606,6 +618,6 @@ def publish_submission(self, submission_id: str):
 
 ---
 
-**Обновлено:** 2025-10-15
+**Обновлено:** 2025-10-16 (добавлен VK адаптер ✅)
 
 

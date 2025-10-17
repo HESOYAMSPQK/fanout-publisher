@@ -133,6 +133,7 @@ bash scripts/check_local_api.sh
 | [QUICK_START_WEB.md](QUICK_START_WEB.md) | Быстрый старт за 5 минут |
 | [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) | Настройка GitHub Pages |
 | [TIKTOK_SETUP_GUIDE.md](TIKTOK_SETUP_GUIDE.md) | Подробная настройка TikTok |
+| [TIKTOK_APP_FORM_TEMPLATE.md](TIKTOK_APP_FORM_TEMPLATE.md) | 📋 Готовые значения для формы TikTok |
 | [VK_SETUP_GUIDE.md](VK_SETUP_GUIDE.md) | Подробная настройка VK |
 | [WEB_VERSION_README.md](WEB_VERSION_README.md) | Полная документация веб-версии |
 

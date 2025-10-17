@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fanout Publisher - Загрузка видео</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📹 Fanout Publisher</h1>
+            <p class="subtitle">Автоматическая загрузка видео на различные платформы</p>
+        </header>
+
+        <main>
+            <!-- Форма загрузки -->
+            <div id="uploadForm" class="card">
+                <h2>Загрузить видео</h2>
+                
+                <form id="videoForm">
+                    <div class="form-group">
+                        <label for="videoFile" class="file-label">
+                            <div class="file-input-wrapper">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <span id="fileLabel">Выберите видео или перетащите сюда</span>
+                                <span id="fileName" class="file-name"></span>
+                            </div>
+                            <input type="file" id="videoFile" accept="video/*" required>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Выберите платформу</label>
+                        <div class="platform-tabs">
+                            <button type="button" class="platform-tab active" data-platform="youtube">
+                                <span class="platform-icon">📺</span>
+                                YouTube
+                            </button>
+                            <button type="button" class="platform-tab" data-platform="vk">
+                                <span class="platform-icon">🌐</span>
+                                VK
+                            </button>
+                            <button type="button" class="platform-tab" data-platform="tiktok">
+                                <span class="platform-icon">🎵</span>
+                                TikTok
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- YouTube форма -->
+                    <div id="youtube-form" class="platform-form active">
+                        <div class="form-group">
+                            <label for="youtube-title">Название видео <span class="required">*</span></label>
+                            <input type="text" id="youtube-title" placeholder="Мой крутой видос" maxlength="100">
+                            <small>До 100 символов. Хештеги будут добавлены автоматически</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="youtube-description">Описание</label>
+                            <textarea id="youtube-description" rows="4" placeholder="Описание видео..."></textarea>
+                            <small>До 5000 символов</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="youtube-tags">Теги</label>
+                            <input type="text" id="youtube-tags" placeholder="shorts, видео, youtube">
+                            <small>Через запятую. Внутренние теги YouTube</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="youtube-hashtags">Хештеги</label>
+                            <input type="text" id="youtube-hashtags" value="#стасайкакпросто" placeholder="#хештег1 #хештег2">
+                            <small>Добавляются к названию видео. #стасайкакпросто обязательный</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="youtube-privacy">Приватность</label>
+                            <select id="youtube-privacy">
+                                <option value="public">Публичное</option>
+                                <option value="unlisted">По ссылке</option>
+                                <option value="private" selected>Приватное</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- VK форма -->
+                    <div id="vk-form" class="platform-form">
+                        <div class="form-group">
+                            <label for="vk-title">Название видео <span class="required">*</span></label>
+                            <input type="text" id="vk-title" placeholder="Название для VK" maxlength="200">
+                            <small>До 200 символов</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vk-description">Описание</label>
+                            <textarea id="vk-description" rows="4" placeholder="Описание видео..."></textarea>
+                            <small>Хештеги можно добавить в описание</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vk-hashtags">Хештеги</label>
+                            <input type="text" id="vk-hashtags" value="#стасайкакпросто" placeholder="#хештег1 #хештег2">
+                            <small>Добавляются к описанию</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vk-privacy">Приватность</label>
+                            <select id="vk-privacy">
+                                <option value="public">Публичное</option>
+                                <option value="private" selected>Приватное</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- TikTok форма (УПРОЩЕННАЯ) -->
+                    <div id="tiktok-form" class="platform-form">
+                        <div class="alert alert-info">
+                            ℹ️ <strong>TikTok:</strong> Минимальные требуемые параметры. Видео загружается в приватном режиме.
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tiktok-caption">Текст видео (caption) <span class="required">*</span></label>
+                            <textarea id="tiktok-caption" rows="6" placeholder="Напишите текст для видео... можно добавить хештеги прямо здесь #стасайкакпросто" maxlength="2200"></textarea>
+                            <small><strong>Обязательное поле!</strong> Максимум 2200 символов. Включите хештеги в текст.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Настройки видео</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="tiktok-disable-comment">
+                                    <span class="checkbox-text">Отключить комментарии</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="tiktok-disable-duet">
+                                    <span class="checkbox-text">Отключить дуэты</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="tiktok-disable-stitch">
+                                    <span class="checkbox-text">Отключить стич</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tiktok-privacy">Приватность</label>
+                            <select id="tiktok-privacy">
+                                <option value="SELF_ONLY" selected>Приватное (только я)</option>
+                                <option value="FOLLOWER_OF_CREATOR">Подписчики</option>
+                                <option value="MUTUAL_FOLLOW_FRIENDS">Взаимные подписчики</option>
+                                <option value="PUBLIC_TO_EVERYONE">Публичное</option>
+                            </select>
+                            <small>По умолчанию: приватное (безопасно для тестов)</small>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <span id="submitText">🚀 Загрузить видео</span>
+                        <span id="submitLoader" class="loader" style="display: none;"></span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Прогресс загрузки -->
+            <div id="uploadProgress" class="card" style="display: none;">
+                <h2>⏳ Загрузка...</h2>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p id="progressText">0%</p>
+                <p id="statusText" class="status-text"></p>
+            </div>
+
+            <!-- Результат -->
+            <div id="result" class="card" style="display: none;">
+                <div id="successResult" style="display: none;">
+                    <h2>✅ Успешно загружено!</h2>
+                    <p><strong>ID заявки:</strong> <code id="submissionId"></code></p>
+                    <p><strong>Статус:</strong> <span id="jobStatus" class="badge badge-processing">В очереди</span></p>
+                    <p id="urlContainer" style="display: none;">
+                        <strong>Ссылка:</strong> <a id="videoUrl" href="#" target="_blank"></a>
+                    </p>
+                    <button onclick="resetForm()" class="btn-secondary">Загрузить ещё</button>
+                </div>
+
+                <div id="errorResult" style="display: none;">
+                    <h2>❌ Ошибка</h2>
+                    <p id="errorMessage" class="error-text"></p>
+                    <button onclick="resetForm()" class="btn-secondary">Попробовать снова</button>
+                </div>
+            </div>
+
+            <!-- Список загруженных видео -->
+            <div class="card">
+                <h2>📋 Последние загрузки</h2>
+                <div id="jobsList">
+                    <p class="loading">Загрузка...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Made with ❤️ for Video Creators | Поддержка: YouTube, VK, TikTok</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
+

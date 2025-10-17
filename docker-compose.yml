@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   # ===== PostgreSQL =====
   postgres:
@@ -52,21 +50,6 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
-    networks:
-      - fanout-network
-
-  # ===== Telegram Bot API (локальный сервер) =====
-  telegram-bot-api:
-    image: aiogram/telegram-bot-api:latest
-    environment:
-      TELEGRAM_API_ID: ${TELEGRAM_API_ID}
-      TELEGRAM_API_HASH: ${TELEGRAM_API_HASH}
-      TELEGRAM_LOCAL: "1"
-    volumes:
-      - telegram_data:/var/lib/telegram-bot-api
-    ports:
-      - "8081:8081"
-    restart: unless-stopped
     networks:
       - fanout-network
 
@@ -146,39 +129,10 @@ services:
     networks:
       - fanout-network
 
-  # ===== Telegram Bot =====
-  bot:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: python -m bot.main
-    environment:
-      - ENV=${ENV:-development}
-      - DEBUG=${DEBUG:-true}
-      - LOG_LEVEL=${LOG_LEVEL:-INFO}
-      - SERVICE_TOKEN=${SERVICE_TOKEN}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - TELEGRAM_LOCAL_API_URL=
-      - TELEGRAM_ADMIN_ID=${TELEGRAM_ADMIN_ID}
-      - API_BASE_URL=${API_BASE_URL}
-      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
-      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
-      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
-      - MINIO_BUCKET=${MINIO_BUCKET}
-      - MINIO_SECURE=${MINIO_SECURE:-false}
-    volumes:
-      - .:/app
-    depends_on:
-      - api
-    restart: unless-stopped
-    networks:
-      - fanout-network
-
 volumes:
   postgres_data:
   redis_data:
   minio_data:
-  telegram_data:
 
 networks:
   fanout-network:

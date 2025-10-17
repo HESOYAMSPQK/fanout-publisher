@@ -42,6 +42,22 @@ class Settings(BaseSettings):
     YOUTUBE_REFRESH_TOKEN: str = ""
     YOUTUBE_DEFAULT_PRIVACY: str = "private"  # public, private, unlisted
     
+    # VK (ВКонтакте)
+    VK_ACCESS_TOKEN: str = ""
+    VK_GROUP_ID: int = 0  # ID группы (опционально, 0 = публикация от имени пользователя)
+    VK_DEFAULT_PRIVACY: str = "private"  # private или public
+    VK_AS_CLIP: bool = False  # Публиковать как клип (короткое вертикальное видео)
+    
+    # TikTok
+    TIKTOK_CLIENT_KEY: str = ""
+    TIKTOK_CLIENT_SECRET: str = ""
+    TIKTOK_ACCESS_TOKEN: str = ""
+    TIKTOK_REFRESH_TOKEN: str = ""  # Для автоматического обновления access token
+    TIKTOK_DEFAULT_PRIVACY: str = "SELF_ONLY"  # SELF_ONLY, MUTUAL_FOLLOW_FRIENDS, FOLLOWER_OF_CREATOR, PUBLIC_TO_EVERYONE
+    TIKTOK_DISABLE_DUET: bool = False
+    TIKTOK_DISABLE_COMMENT: bool = False
+    TIKTOK_DISABLE_STITCH: bool = False
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

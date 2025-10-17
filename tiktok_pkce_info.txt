@@ -1,0 +1,4 @@
+Code Verifier: 8LWk3zhT_DgIHaAw0RSVgQunwRV9z_BdK2z4XxVVpGwWzzvPqS0CXI59cdwJiDHyVaPvhQdwu8bGRZZqJwpsYw
+Code Challenge: ce9sRzqBkPBJg5sRMoEs-DQkMhPlOb35a41luSeAKK8
+State: B5xt11dwSlyAzDwZ4fUmOg
+Authorization URL: https://www.tiktok.com/v2/auth/authorize/?client_key=sbawgkv24g11g5d0jk&scope=user.info.basic%2Cvideo.upload%2Cvideo.publish&response_type=code&redirect_uri=https%3A%2F%2Fjustinstolpe.com%2Fblog_code%2Ftiktokapi%2Flogin.php&state=B5xt11dwSlyAzDwZ4fUmOg&code_challenge=ce9sRzqBkPBJg5sRMoEs-DQkMhPlOb35a41luSeAKK8&code_challenge_method=S256
